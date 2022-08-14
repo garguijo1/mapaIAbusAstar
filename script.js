@@ -31,7 +31,7 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
     let nodo_elegido = {
         nodo : nodoInicial,
         nodoPadre : undefined,
-        // dis: 0
+        dis: 0
     };
 
     elegidos.push(nodo_elegido);
@@ -43,7 +43,7 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
   
     let cont = 0;
    
-    while(!encontrado && cont <50){
+    while(!encontrado && cont <500){
         cont++;
         let f_menor = 9999999;
 
@@ -74,11 +74,11 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
                 let re = 0 ;
                 // console.log('------------- BUSCANDO');
                 let nfill = nodo_elegido.nodoPadre;
-                while(!(ruta.some(r => r === reconstruccion[0].nodo)) && re < 10){
+                while(!(ruta.some(r => r === reconstruccion[0].nodo)) && re < 100){
                     // console.log('primer while de busqueda');
                     let nodoAux = elegidos.filter(e => e.nodo === nfill);
                     let nAux = nodoAux[nodoAux.length - 1];
-                    console.log('nodoAux: ',nodoAux);
+                    console.log('ruta: ',ruta);
                     console.log('nAux: ', nAux);
                     nfill = nAux.nodoPadre;
                     reconstruccion.unshift(nAux);
@@ -86,9 +86,9 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
                 }
                 console.log(ruta);
                 console.log('rec: ',reconstruccion);
-                // console.log('------------- ELIMINANDO');
+                console.log('-------------->>>>>   CONTADOR', re);
                 re = 0
-                while(ruta[ruta.length - 1] !== reconstruccion[0].nodo && re < 10){
+                while(ruta[ruta.length - 1] !== reconstruccion[0].nodo && re < 100){
                     // console.log('segundo while de eliminacion');
                     ruta.pop();
                     re++;
@@ -118,7 +118,7 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
             let n_abierto = {
                 nodo : puntos[n],
                 nodoPadre : nodoActual,
-                // dis: nodo_elegido.dis + distanciaCord(nodoActual,puntos[n])
+                dis: nodo_elegido.dis + distanciaCord(nodoActual,puntos[n]),
             }
 
             if(
@@ -145,7 +145,7 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
             ){
                 let g = distanciaCord(n.nodoPadre,n.nodo);
                 let h = distanciaCord(n.nodo,nodoFinal);
-                let f = g + h;
+                let f = n.dis + h;
                 if(f < f_menor){
                     f_menor = f;
                     nodo_elegido = n;
@@ -164,7 +164,7 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
         // cerrada.push(nodoActual);
         console.log('--------------------------------');
     }
-
+    console.log('==================== sssssss CONTEO FINAL: ',cont);
     cerrada.push(nodoFinal);
     ruta.push(nodoFinal);
 
@@ -304,9 +304,9 @@ s_destino.append(frag_opt2);
     let flightPath = new google.maps.Polyline({
         path: rutaPath,
         geodesic: true,
-        strokeColor: "#2549c0b4",
+        strokeColor: "#ecb10d",
         strokeOpacity: 1.0,
-        strokeWeight: 4,
+        strokeWeight: 6,
       });
 
 
