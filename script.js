@@ -47,22 +47,20 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
         cont++;
         let f_menor = 9999999;
 
-
-
         console.log('padre: ',nodoPadre);
-        console.log('cerrada: ',cerrada[cerrada.length - 1] );
-
+        console.log('ruta: ',ruta[ruta.length - 1] );
 
         cerrada.push(nodoActual);
    
         if(ruta[ruta.length - 1] !== nodoPadre && ruta[ruta.length - 1] !== nodoInicial){
             console.log('no es el nodo padre');
             console.log('padre: ',nodoPadre);
-            console.log('cerrada: ',ruta[ruta.length - 1] );
+            console.log('ruta: ',ruta[ruta.length - 1] );
 
             
 
             if(ruta.some(r => r === nodoPadre)){
+                //* Proceso de Reinserccion 
                 let z= 0;
                 while(ruta[ruta.length - 1] !== nodoPadre && z<30){
                     console.log('quitando: ',ruta[ruta.length - 1]);
@@ -70,13 +68,13 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
                     z++;
                 }
             }else{
-                // console.log('------------- RECONSTRUYENDO ------------');
+                //* Proceso de Reconstruccion 
                 let reconstruccion = [];
                 reconstruccion.push(nodo_elegido);
                 let re = 0 ;
                 // console.log('------------- BUSCANDO');
                 let nfill = nodo_elegido.nodoPadre;
-                while(ruta.some(r => r !== reconstruccion[0].nodo) && re < 10){
+                while(!(ruta.some(r => r === reconstruccion[0].nodo)) && re < 10){
                     // console.log('primer while de busqueda');
                     let nodoAux = elegidos.filter(e => e.nodo === nfill);
                     let nAux = nodoAux[nodoAux.length - 1];
