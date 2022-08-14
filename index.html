@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Maps</title>
+    <link rel="shortcut icon" href="<?php echo URL_APP ?>/template/plantilla_fisi/sources/img/logo_fisi.png" type="image/x-icon">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+    <script src="https://kit.fontawesome.com/3b970ebbec.js" crossorigin="anonymous"></script>
+</head>
+<body>
+ <!--creamos un contenedor para el mapa   -->
+	<div id="map"></div>
+
+    <div class="cont_inter ocultar" id="cont_list_facultades">
+         <h1>LISTA DE PUNTOS </h1>
+         <div class="cont_scroll_list ">
+            <ul id="lista_facultades">
+            </ul>
+         </div>
+    </div>
+
+    <div class="cont_inter " id="cont_list_facultades">
+        <h1>IR DE UN PUNTO A OTRO</h1>
+        <div class="cont_scroll_list">
+            <h3 class="sub_titulo">Origen</h3>
+            <select class="select_inter" name="" id="s_origen">
+                <option value="-1">Seleccione su origen</option>
+            </select>
+            <h3 class="sub_titulo">Destino</h3>
+            <select class="select_inter" name="" id="s_destino">
+                <option value="-1">Seleccione su destino</option>
+            </select>
+
+            <button class="btn_full" id='btn_genera_ruta'>
+                GENERAR RUTA
+            </button>
+
+        </div>
+   </div>
+
+    <div class="cont_inter ocultar" id="cont_list_facultades">
+        <h1>MI UBICACION</h1>
+        <div class="cont_scroll_list">
+        <!-- <ul id="lista_facultades">
+        </ul> -->
+        </div>
+    </div>
+
+    <div class="cont_inter ocultar" id="cont_list_facultades">
+        <h1>DE MI UBICACION A OTRO PUNTO</h1>
+        <div class="cont_scroll_list">
+        <!-- <ul id="lista_facultades">
+        </ul> -->
+        </div>
+    </div>
+
+    <div class="cont_btn">
+        <div 
+            class="btn_ocultar_lista "
+            data-in=0>
+                <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div 
+            class="btn_ocultar_lista active"
+            data-in=1>
+                <i class="fas fa-exchange"></i>
+        </div>
+        <div 
+            class="btn_ocultar_lista"
+            data-in=2>
+                <i class="fas fa-male"></i>
+        </div>
+        <div 
+            class="btn_ocultar_lista"
+            data-in=3>
+                <i class="fas fa-running"></i>
+        </div>
+        <div id="btn_ocultar_cont">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+    
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyyyFUW6yJMdQjEgMFtZHayz8-1OpJ5a8&map_ids=4ae3e9bf9f6364c2&callback=iniciarMap"></script>
+<!-- la api de google maps tiene un callback con la funcion que 
+inicializa al mapa -->
+</body>
+</html>

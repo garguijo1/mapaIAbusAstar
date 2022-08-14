@@ -1,0 +1,207 @@
+:root{
+    --light: #fdfdfd;
+    --azul: #0b399c;
+    --rojo: #b91a22;
+    --verde: #0e8f39;
+    --amarillo: #e7b614;
+}
+
+@font-face {
+    font-family: 'titulo';
+    src: url(/sources/fonts/Roboto-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'texto' ;
+    src: url(/sources/fonts/Roboto-Light.ttf);
+}
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    padding: 0;
+    margin: 0;
+}
+
+h6{
+    margin: 0;
+}
+
+#map {
+	height:100vh;
+	width: 100%;
+}
+
+.cont_inter{
+    position: absolute;
+    z-index: 10;
+    background-color: var(--light);
+    left: 70px;
+    top: 10%;
+    bottom: 10%;
+    width: 300px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px #0004;
+    opacity: 1;
+    transition: all .5s;
+}
+
+.cont_inter.ocultar{
+    left: -300px;
+    opacity: 0;
+}
+
+.cont_btn{
+    position: absolute;
+    z-index: 20;
+    left: 10px;
+    top: 10%;
+    bottom: 10%;
+    background-color:  var(--light);
+    width: 50px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+    box-shadow: 2px 2px 5px #0004;
+
+}
+
+.btn_ocultar_lista{
+    /* position: absolute;
+    z-index: 20;
+    left: 10px;
+    top: 15%; */
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--azul);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all .5s;
+    margin-bottom: 10px;
+}
+
+.btn_ocultar_lista:hover,
+.btn_ocultar_lista.active{
+    background-color: var(--verde);
+    transform: scale(1.05);
+}
+
+#btn_ocultar_cont{
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--rojo);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all .5s;
+}
+
+#btn_ocultar_cont:hover{
+    background-color: #ec1414;
+    transform: scale(1.05);
+}
+
+.cont_scroll_list{
+    overflow: auto;
+    height: 90%;
+}
+
+.cont_scroll_list::-webkit-scrollbar{
+    display: none;
+}
+
+#cont_list_facultades > h1{
+    font-family: 'titulo';
+    margin: 0;
+    position: relative;
+    font-size: 20px;
+    letter-spacing: 2px;
+    padding-bottom: 15px;
+}
+
+#cont_list_facultades > h1::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #c4c4c49c;
+}
+
+#lista_facultades{
+    list-style: none;
+    padding-left: 0;
+    overflow: auto;
+}
+
+.li_facultad{
+    margin: 10px;
+    font-family: 'texto';
+    padding: 10px;
+    background-color: #eeeeee;
+    border-radius: 5px;
+    transition: all .5s;
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.li_facultad:hover{
+    transform: scale(1.05);
+    background-color: #dadada;
+}
+
+.sub_titulo{
+    font-family: 'titulo';
+}
+
+.select_inter{
+    width: 100%;
+    height: 40px;
+    font-family: 'texto';
+    border: 1px solid #4c80f07c;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    /* transition: all .5s; */
+}
+
+.select_inter:focus{
+    border: 2px solid var(--azul);
+}
+
+.btn_full{
+    font-family: 'titulo';
+    width: 100%;
+    background-color: var(--amarillo);
+    border: none;
+    height: 40px;
+    border-radius: 20px;
+    margin-top: 50px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all .5s;
+}
+
+.btn_full:hover{
+    background-color: #f3c52c;
+}
