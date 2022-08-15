@@ -6,10 +6,10 @@ console.log(importante);
 
 //* funcion para calcular la distancia entre 2 puntos
 const distanciaCord = (pi,pf)=>{
-
-    let dis = Math.sqrt( Math.pow(pi.lat - pf.lat,2) + Math.pow(pi.lng - pf.lng,2));
+    let dis = Math.sqrt( 
+        Math.pow(pi.lat - pf.lat,2) + Math.pow(pi.lng - pf.lng,2)
+    );
     return dis;
-
 }
 
 //* ALGORITMO A STAR
@@ -17,11 +17,8 @@ const distanciaCord = (pi,pf)=>{
 //!=====================================================================
 
 const busquedaAStar = (nodoInicial, nodoFinal) => {
-    console.log(nodoInicial);
-    console.log(nodoFinal);
-
-    let abierta = []; // posibles caminos
-    let cerrada = []; // nodos ya revisado
+    let abierta = []; 
+    let cerrada = []; 
     let ruta = [];
     let elegidos = [];
 
@@ -47,49 +44,29 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
         cont++;
         let f_menor = 9999999;
 
-        console.log('padre: ',nodoPadre);
-        console.log('ruta: ',ruta[ruta.length - 1] );
-
         cerrada.push(nodoActual);
-   
+
         if(ruta[ruta.length - 1] !== nodoPadre && ruta[ruta.length - 1] !== nodoInicial){
-            console.log('no es el nodo padre');
-            console.log('padre: ',nodoPadre);
-            console.log('ruta: ',ruta[ruta.length - 1] );
-
-            
-
             if(ruta.some(r => r === nodoPadre)){
-                //* Proceso de Reinserccion 
                 let z= 0;
                 while(ruta[ruta.length - 1] !== nodoPadre && z<30){
-                    console.log('quitando: ',ruta[ruta.length - 1]);
                     ruta.pop();
                     z++;
                 }
             }else{
-                //* Proceso de Reconstruccion 
                 let reconstruccion = [];
                 reconstruccion.push(nodo_elegido);
                 let re = 0 ;
-                // console.log('------------- BUSCANDO');
                 let nfill = nodo_elegido.nodoPadre;
                 while(!(ruta.some(r => r === reconstruccion[0].nodo)) && re < 100){
-                    // console.log('primer while de busqueda');
                     let nodoAux = elegidos.filter(e => e.nodo === nfill);
                     let nAux = nodoAux[nodoAux.length - 1];
-                    console.log('ruta: ',ruta);
-                    console.log('nAux: ', nAux);
                     nfill = nAux.nodoPadre;
                     reconstruccion.unshift(nAux);
                     re++;
                 }
-                console.log(ruta);
-                console.log('rec: ',reconstruccion);
-                console.log('-------------->>>>>   CONTADOR', re);
                 re = 0
                 while(ruta[ruta.length - 1] !== reconstruccion[0].nodo && re < 100){
-                    // console.log('segundo while de eliminacion');
                     ruta.pop();
                     re++;
                 }
@@ -102,7 +79,6 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
 
                 ruta.push(...recAux);
                 console.log(ruta);
-                // return ruta;
             }
             
         }
@@ -111,7 +87,6 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
 
         nodoActual.nodos.forEach(n => {
             if(puntos[n] === nodoFinal){
-                // console.log('.........ENCONTRADO.............');
                 encontrado = true;
             }
 
@@ -131,10 +106,6 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
             
         });
 
-        // console.log('ABIERTA: ', abierta);
-
-        // filtro debe ir aqui
-
         abierta.forEach(n => {
 
             if(
@@ -149,28 +120,15 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
                 if(f < f_menor){
                     f_menor = f;
                     nodo_elegido = n;
-                    // console.log('------------->> elegido: ', nodo_elegido);
                 }
             }
-           
-            
         });
-
-        // console.log('cambio');
         elegidos.push(nodo_elegido);
-        console.log('ELEGIDO: ',nodo_elegido);
         nodoPadre = nodo_elegido.nodoPadre;
         nodoActual = nodo_elegido.nodo;
-        // cerrada.push(nodoActual);
-        console.log('--------------------------------');
     }
-    console.log('==================== sssssss CONTEO FINAL: ',cont);
     cerrada.push(nodoFinal);
     ruta.push(nodoFinal);
-
-    console.log(ruta);
-    console.log(cerrada);
-
     return ruta;
 }
 
