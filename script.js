@@ -236,6 +236,26 @@ function iniciarMap(){
     const s_destino_ub = document.getElementById('s_destino_ubc');
     const alert_od = document.getElementById('aler-od'); 
 
+    const btn_genera_ruta = document.getElementById('btn_genera_ruta');
+      //? para simular la ubicacion 
+      const check_ub = document.getElementById('check_ub');
+      const btn_mst_ubc = document.getElementById('btn_mostrar_ubc');
+      const inp_lat = document.getElementById('inp_lat');
+      const inp_lng = document.getElementById('inp_lng');
+      const aler_ubc = document.getElementById('aler-ubc');
+
+      const btn_ruta_ubc = document.getElementById('btn_genera_ruta_ubc');
+      const aler_ub = document.getElementById('alert_ub'); 
+      const aler_d_ub = document.getElementById('aler-d-od');
+      const text_rub = document.getElementById('text_rub');
+      const aler_ub_r = document.getElementById('aler-ub-r');
+
+      const check_mover = document.getElementById('check_mover');
+      const alert_mover = document.getElementById('alert_mover');
+      const text_mover = document.getElementById('text_mover');
+      const aler_ub_mover = document.getElementById('aler-ub-mover');
+
+
     let pos = 0;
     let fragment = document.createDocumentFragment();
     let frag_opt =  document.createDocumentFragment();
@@ -336,7 +356,7 @@ s_destino_ub.append(frag_opt3);
     s_origen.addEventListener('change',()=> alert_od.classList.add('d-none'));
     s_destino.addEventListener('change',()=> alert_od.classList.add('d-none'));
 
-    const btn_genera_ruta = document.getElementById('btn_genera_ruta');
+ 
     
 
     btn_genera_ruta.addEventListener('click',()=>{
@@ -371,12 +391,17 @@ s_destino_ub.append(frag_opt3);
         
     });
 
-      //? para simular la ubicacion 
-      const check_ub = document.getElementById('check_ub');
-      const btn_mst_ubc = document.getElementById('btn_mostrar_ubc');
-      const inp_lat = document.getElementById('inp_lat');
-      const inp_lng = document.getElementById('inp_lng');
-      
+
+
+      inp_lat.addEventListener('change',()=>{
+        aler_ubc.classList.add('d-none');
+        aler_ub_mover.classList.add('d-none');
+      })
+
+      inp_lng.addEventListener('change',()=>{
+        aler_ubc.classList.add('d-none');
+        aler_ub_mover.classList.add('d-none');
+      })
 
       check_ub.addEventListener('change',()=>{
         if(check_ub.checked){
@@ -407,11 +432,16 @@ s_destino_ub.append(frag_opt3);
         if(check_ub.checked){
             console.log('latitud: ',inp_lat.value);
             console.log('longitud: ',inp_lng.value);
-            cordUser.lat = parseFloat(inp_lat.value);
-            cordUser.lng = parseFloat(inp_lng.value);
-            console.log(cordUser);
-            map.setCenter(cordUser);
-            markerUser.setPosition(cordUser);
+            if(inp_lat.value && inp_lng.value){
+                cordUser.lat = parseFloat(inp_lat.value);
+                cordUser.lng = parseFloat(inp_lng.value);
+                console.log(cordUser);
+                map.setCenter(cordUser);
+                markerUser.setPosition(cordUser);
+            }else{
+                aler_ubc.classList.remove('d-none');
+            }
+            
         }else{
             if(navigator.geolocation){
                 navigator.geolocation.getCurrentPosition(
@@ -429,60 +459,63 @@ s_destino_ub.append(frag_opt3);
 
                 );
             }else{
-                alert('el navegador no cuenta con la geolocalizacion');
+                alert('el navegador no cuenta con geolocalizacion');
             }
         }
       });
 
-      const dibujarRutaUbicacion = ()=>{
-
-      }
     
-      const btn_ruta_ubc = document.getElementById('btn_genera_ruta_ubc');
-      const aler_ub = document.getElementById('alert_ub'); 
-      const aler_d_ub = document.getElementById('aler-d-od');
-      const text_rub = document.getElementById('text_rub');
+
 
       s_destino_ub.addEventListener('change',()=> {
         aler_ub.classList.add('d-none');
         aler_d_ub.classList.add('d-none');
+        aler_ub_r.classList.add('d-none');
       });
 
       btn_ruta_ubc.addEventListener('click',()=>{
-
+        aler_ub.classList.add('d-none');
+        aler_d_ub.classList.add('d-none');
+        aler_ub_r.classList.add('d-none');
        
         let nodoCercano ;
         let distanciaMenor = 999999;
 
         if(s_destino_ub.value >= 0){
-            aler_ub.classList.remove('d-none');
+            
             if(check_ub.checked){
 
-                text_rub.textContent = 'el sistema usara la ubicacion simulada';
-
-                cordUser.lat = parseFloat(inp_lat.value);
-                cordUser.lng = parseFloat(inp_lng.value);
-                map.setCenter(cordUser);
-                markerUser.setPosition(cordUser);
-
-                puntos.forEach(p => {
-                    let disAux = distanciaCord(cordUser,p);
-                    if(disAux < distanciaMenor){
-                        distanciaMenor = disAux;
-                        nodoCercano = p;
-                    }
-                });
+                if(inp_lat.value  && inp_lng.value){
+                    text_rub.textContent = 'el sistema usara la ubicacion simulada';
+                    aler_ub.classList.remove('d-none');
+                    cordUser.lat = parseFloat(inp_lat.value);
+                    cordUser.lng = parseFloat(inp_lng.value);
+                    map.setCenter(cordUser);
+                    markerUser.setPosition(cordUser);
     
-                console.log('NODO CERCANO: ',nodoCercano);
-                let rutaAux = busquedaAStar(nodoCercano,puntos[s_destino_ub.value]);
-                rutaAux.unshift(cordUser);
-                flightPath.setPath(rutaAux);
-    
-                flightPath.setMap(null);
-                flightPath.setMap(map);
+                    puntos.forEach(p => {
+                        let disAux = distanciaCord(cordUser,p);
+                        if(disAux < distanciaMenor){
+                            distanciaMenor = disAux;
+                            nodoCercano = p;
+                        }
+                    });
+        
+                    console.log('NODO CERCANO: ',nodoCercano);
+                    let rutaAux = busquedaAStar(nodoCercano,puntos[s_destino_ub.value]);
+                    rutaAux.unshift(cordUser);
+                    flightPath.setPath(rutaAux);
+        
+                    flightPath.setMap(null);
+                    flightPath.setMap(map);
+                }else{
+                    aler_ub_r.classList.remove('d-none');
+                }
+                
 
             }else{
                 text_rub.textContent = 'el sistema usara su ubicacion';
+                aler_ub.classList.remove('d-none');
                 if(navigator.geolocation){
                     navigator.geolocation.getCurrentPosition(
                         (position)=>{
@@ -530,10 +563,70 @@ s_destino_ub.append(frag_opt3);
             })
     
             marcadores[s_destino_ub.selectedOptions[0].dataset.mark].info.open(map,marcadores[s_destino_ub.selectedOptions[0].dataset.mark].mark);
-
-
-
-            
       });
+
+
+      check_mover.addEventListener('change',()=>{
+        console.log(check_mover.checked);
+        if(check_mover.checked){
+            if(check_ub.checked){
+
+                if(inp_lat.value && inp_lng.value){
+                    cordUser.lat = parseFloat(inp_lat.value);
+                    cordUser.lng = parseFloat(inp_lng.value);
+                    markerUser.setPosition(cordUser);
+                    text_mover.textContent = `El sistema usara la ubicación simualada, lat: ${cordUser.lat}, lng: ${cordUser.lng}`;
+                    alert_mover.classList.remove('d-none');
+                }else{
+                    aler_ub_mover.classList.remove('d-none');
+                    check_mover.checked = false;
+                }
+                
+            }else{
+
+                if(navigator.geolocation){
+                    navigator.geolocation.getCurrentPosition(
+                        (position)=>{
+                            cordUser.lat = position.coords.latitude;
+                            cordUser.lng = position.coords.longitude;
+                            console.log(cordUser);
+                            map.setCenter(cordUser);
+                            markerUser.setPosition(cordUser);
+
+         
+                            text_mover.textContent = `El sistema usara la ubicación real, lat: ${cordUser.lat}, lng: ${cordUser.lng}`;
+                            alert_mover.classList.remove('d-none');
+
+                        },
+                        ()=>{
+                            alert('error al obtener la posicion');
+                        }
+
+                    );
+                }else{
+                    alert('el navegador no cuenta con la geolocalizacion');
+                }
+            }
+        }else{
+
+        }
+      })
+
+      document.addEventListener("keydown", (event) => {
+        if(check_mover.checked){
+            if (event.key == "ArrowLeft"){
+                cordUser.lng = cordUser.lng - 0.00001;
+            } else if (event.key == "ArrowUp"){
+                cordUser.lat = cordUser.lat + 0.00001;
+            } else if (event.key == "ArrowRight"){
+                cordUser.lng = cordUser.lng + 0.00001;
+            } else if (event.key == "ArrowDown"){
+                cordUser.lat = cordUser.lat - 0.00001;
+            }
+    
+            markerUser.setPosition(cordUser);
+        }
+        
+    });
 
 }

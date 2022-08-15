@@ -301,6 +301,11 @@ h6{
     color: #349227;
 }
 
+.a_warning{
+    background-color: #fff9a4;
+    color: #aa9415;
+}
+
 .alerta{
   
     display: flex;
@@ -334,3 +339,24 @@ h6{
     font-size: 12px;
 }
 
+.cuadro_info{
+    background-color: #b3cbff;
+    color: #0041cc;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.cont_info{
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+}
+
+.cont_info>span{
+    font-family: 'texto';
+    font-size: 12px;
+}
+.cont_info>i{
+    width: 30px;
+    font-size: 15px;
+}

@@ -49,7 +49,7 @@
 
     <div class="cont_inter ocultar" id="cont_list_facultades">
         <h1>MI UBICACIÓN</h1>
-        <div class="cont_scroll_list">
+ 
             <h3 class="sub_titulo">Mostrar mi ubicación</h3>
             <button class="btn_full" style="margin-top: 0px;" id="btn_mostrar_ubc">
                 MOSTRAR
@@ -70,12 +70,20 @@
                 <span>longitud: </span>
                 <input type="text" id="inp_lng" disabled placeholder="-77.08196">
             </label>
+   
+        <div class="alerta a_danger d-none" id="aler-ubc">
+            <div class='icon_alert'>
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="text_alert">
+                <h4>debe ingresar latitud y longitud</h4>
+            </div>
         </div>
     </div>
 
     <div class="cont_inter ocultar" id="cont_list_facultades">
         <h1>DE MI UBICACION A OTRO PUNTO</h1>
-        <div class="cont_scroll_list">
+
             <h3 class="sub_titulo">Destino</h3>
             <select class="select_inter" name="" id="s_destino_ubc">
                 <option value="-1">Seleccione su destino</option>
@@ -103,7 +111,71 @@
                 </div>
             </div>
 
+        <div class="alerta a_danger d-none" id="aler-ub-r">
+            <div class='icon_alert'>
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="text_alert">
+                <h4>debe ingresar latitud y longitud en la seccion de ubicación</h4>
+            </div>
         </div>
+    </div>
+
+    <div class="cont_inter ocultar" id="cont_list_facultades">
+        <h1>MOVER AL USUARIO</h1>
+       
+        <div class="cont_chech_ubc" style="margin: 20px 0;">
+            <span>Mover al usuario:</span>
+            <input type="checkbox" class="in_check" id="check_mover">
+            <label for="check_mover" class="lab_check"></label>  
+        </div>
+
+        <div class="cuadro_info">
+            <div class="cont_info">
+                <i class="fas fa-arrow-up"></i>
+                <span>arriba</span>
+            </div>
+            <div class="cont_info">
+                <i class="fas fa-arrow-down"></i>
+                <span>Abajo</span>
+            </div>
+            <div class="cont_info">
+                <i class="fas fa-arrow-right"></i>
+                <span>derecha</span>
+            </div>
+            <div class="cont_info">
+                <i class="fas fa-arrow-left"></i>
+                <span>izquierda</span>
+            </div>
+        </div>
+
+        <div class="alerta a_warning " style="margin-top: 10px;">
+            <div class='icon_alert'>
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="text_alert">
+                <h4>Esta función solo esta disponible para computadoras</h4>
+            </div>
+        </div>
+
+        <div class="alerta a_info d-none" id="alert_mover">
+            <div class='icon_alert'>
+                <i class="fas fa-info"></i>
+            </div>
+            <div class="text_alert">
+                <h4 id="text_mover"></h4>
+            </div>
+        </div>
+
+        <div class="alerta a_danger d-none" id="aler-ub-mover">
+            <div class='icon_alert'>
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="text_alert">
+                <h4>debe ingresar latitud y longitud en la seccion de ubicación</h4>
+            </div>
+        </div>
+
     </div>
 
     <div class="cont_btn">
@@ -127,9 +199,19 @@
             data-in=3>
                 <i class="fas fa-running"></i>
         </div>
+        <div 
+            class="btn_ocultar_lista"
+            data-in=4>
+            <i class="fas fa-arrows-alt"></i>
+        </div>
+        
+           
+
+
         <div id="btn_ocultar_cont">
             <i class="fas fa-times"></i>
         </div>
+        
     </div>
     
 
