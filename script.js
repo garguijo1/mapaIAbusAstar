@@ -223,7 +223,7 @@ function iniciarMap(){
     })
 
 
-
+    let rutaBorrado =  [{ lat: 0, lng: 0 }];
 
 
     //creamos la lista de facultades en la barar izquierda 
@@ -233,27 +233,42 @@ function iniciarMap(){
     const btn_total = document.getElementById('btn_ocultar_cont');
     const s_origen = document.getElementById('s_origen');
     const s_destino = document.getElementById('s_destino');
+    const s_destino_ub = document.getElementById('s_destino_ubc');
+    const alert_od = document.getElementById('aler-od'); 
 
-    let pos = 1;
+    let pos = 0;
     let fragment = document.createDocumentFragment();
     let frag_opt =  document.createDocumentFragment();
     let frag_opt2 = document.createDocumentFragment();
+    let frag_opt3 = document.createDocumentFragment();
     let contador = 0;
     importante.forEach(f => {
         let li_fac = document.createElement('li');
         let o_fac = document.createElement('option');
         let o_fac2 = document.createElement('option');
+        let o_fac3 = document.createElement('option');
+
         li_fac.classList.add('li_facultad');
         li_fac.textContent = f.name;
+
         o_fac.textContent = f.name;
         o_fac.value = f.id;
+        o_fac.setAttribute('data-mark',contador);
+
         o_fac2.textContent = f.name;
         o_fac2.value = f.id;
+        o_fac2.setAttribute('data-mark',contador);
+
+        o_fac3.textContent = f.name;
+        o_fac3.value = f.id;
+        o_fac3.setAttribute('data-mark',contador);
+
         li_fac.setAttribute('data-index',f.id);
         li_fac.setAttribute('data-mark',contador);
         contador++;
 
         li_fac.addEventListener('click',()=>{
+            borrarLinea();
             console.log(puntos[li_fac.dataset.index]);
             let p  =  puntos[li_fac.dataset.index];
             map.setCenter(p);
@@ -270,6 +285,7 @@ function iniciarMap(){
         fragment.append(li_fac);    
         frag_opt.append(o_fac);
         frag_opt2.append(o_fac2);
+        frag_opt3.append(o_fac3);
     });
 
 
@@ -277,6 +293,7 @@ function iniciarMap(){
 list_facultades.append(fragment);
 s_origen.append(frag_opt);
 s_destino.append(frag_opt2);
+s_destino_ub.append(frag_opt3);
 
     btn_ocultar.forEach(b=>{
         b.addEventListener('click',()=>{
@@ -309,15 +326,38 @@ s_destino.append(frag_opt2);
         strokeWeight: 6,
       });
 
+    const borrarLinea = ()=>{
+        flightPath.setPath(rutaBorrado);
+
+        flightPath.setMap(null);
+        flightPath.setMap(map);
+    }
+
+    s_origen.addEventListener('change',()=> alert_od.classList.add('d-none'));
+    s_destino.addEventListener('change',()=> alert_od.classList.add('d-none'));
 
     const btn_genera_ruta = document.getElementById('btn_genera_ruta');
+    
 
     btn_genera_ruta.addEventListener('click',()=>{
         
-        p_origen = document.getElementById('s_origen').value;
-        p_destino = document.getElementById('s_destino').value;
+        p_origen = s_origen.value;
+        p_destino = s_destino.value;
+        
 
+        
+
+        marcadores.forEach(m =>{
+            m.info.close();
+        })
+
+       
         if( p_origen >= 0 && p_destino >= 0){
+
+            marcadores[s_origen.selectedOptions[0].dataset.mark].info.open(map,marcadores[s_origen.selectedOptions[0].dataset.mark].mark);
+            marcadores[s_destino.selectedOptions[0].dataset.mark].info.open(map,marcadores[s_destino.selectedOptions[0].dataset.mark].mark);
+    
+
             rutaPath = busquedaAStar(puntos[ p_origen],puntos [p_destino]);
 
                 flightPath.setPath(rutaPath);
@@ -325,12 +365,175 @@ s_destino.append(frag_opt2);
               flightPath.setMap(null);
               flightPath.setMap(map);
         }else{
-            alert('debe elegir una punto de orige y de destino');
+            console.log(alert_od);
+            alert_od.classList.remove('d-none')
         }
         
     });
 
+      //? para simular la ubicacion 
+      const check_ub = document.getElementById('check_ub');
+      const btn_mst_ubc = document.getElementById('btn_mostrar_ubc');
+      const inp_lat = document.getElementById('inp_lat');
+      const inp_lng = document.getElementById('inp_lng');
+      
 
+      check_ub.addEventListener('change',()=>{
+        if(check_ub.checked){
+            inp_lat.removeAttribute('disabled');
+            inp_lng.removeAttribute('disabled');
+        }else{
+            inp_lat.setAttribute('disabled',true);
+            inp_lng.setAttribute('disabled',true);
+        }
+      });
+
+      let cordUser = {
+        lat: 0,
+        lng: 0
+      }
+
+    var markerUser = new google.maps.Marker({
+        position: cordUser , //? coordenadas del marker
+        map: map, //? mapa donde se ubica el marcador
+        icon: './sources/img/persona.png'
+    });
+
+      btn_mst_ubc.addEventListener('click',()=>{
+        marcadores.forEach(m =>{
+            m.info.close();
+        })
+        borrarLinea();
+        if(check_ub.checked){
+            console.log('latitud: ',inp_lat.value);
+            console.log('longitud: ',inp_lng.value);
+            cordUser.lat = parseFloat(inp_lat.value);
+            cordUser.lng = parseFloat(inp_lng.value);
+            console.log(cordUser);
+            map.setCenter(cordUser);
+            markerUser.setPosition(cordUser);
+        }else{
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(
+                    (position)=>{
+                        console.log(position);
+                        cordUser.lat = position.coords.latitude;
+                        cordUser.lng = position.coords.longitude;
+                        console.log(cordUser);
+                        map.setCenter(cordUser);
+                        markerUser.setPosition(cordUser);
+                    },
+                    ()=>{
+                        alert('error al obtener la posicion');
+                    }
+
+                );
+            }else{
+                alert('el navegador no cuenta con la geolocalizacion');
+            }
+        }
+      });
+
+      const dibujarRutaUbicacion = ()=>{
+
+      }
     
+      const btn_ruta_ubc = document.getElementById('btn_genera_ruta_ubc');
+      const aler_ub = document.getElementById('alert_ub'); 
+      const aler_d_ub = document.getElementById('aler-d-od');
+      const text_rub = document.getElementById('text_rub');
+
+      s_destino_ub.addEventListener('change',()=> {
+        aler_ub.classList.add('d-none');
+        aler_d_ub.classList.add('d-none');
+      });
+
+      btn_ruta_ubc.addEventListener('click',()=>{
+
+       
+        let nodoCercano ;
+        let distanciaMenor = 999999;
+
+        if(s_destino_ub.value >= 0){
+            aler_ub.classList.remove('d-none');
+            if(check_ub.checked){
+
+                text_rub.textContent = 'el sistema usara la ubicacion simulada';
+
+                cordUser.lat = parseFloat(inp_lat.value);
+                cordUser.lng = parseFloat(inp_lng.value);
+                map.setCenter(cordUser);
+                markerUser.setPosition(cordUser);
+
+                puntos.forEach(p => {
+                    let disAux = distanciaCord(cordUser,p);
+                    if(disAux < distanciaMenor){
+                        distanciaMenor = disAux;
+                        nodoCercano = p;
+                    }
+                });
+    
+                console.log('NODO CERCANO: ',nodoCercano);
+                let rutaAux = busquedaAStar(nodoCercano,puntos[s_destino_ub.value]);
+                rutaAux.unshift(cordUser);
+                flightPath.setPath(rutaAux);
+    
+                flightPath.setMap(null);
+                flightPath.setMap(map);
+
+            }else{
+                text_rub.textContent = 'el sistema usara su ubicacion';
+                if(navigator.geolocation){
+                    navigator.geolocation.getCurrentPosition(
+                        (position)=>{
+                            cordUser.lat = position.coords.latitude;
+                            cordUser.lng = position.coords.longitude;
+                            console.log(cordUser);
+                            map.setCenter(cordUser);
+                            markerUser.setPosition(cordUser);
+
+                            puntos.forEach(p => {
+                                let disAux = distanciaCord(cordUser,p);
+                                if(disAux < distanciaMenor){
+                                    distanciaMenor = disAux;
+                                    nodoCercano = p;
+                                }
+                            });
+                
+                            console.log('NODO CERCANO: ',nodoCercano);
+                            let rutaAux = busquedaAStar(nodoCercano,puntos[s_destino_ub.value]);
+                            rutaAux.unshift(cordUser);
+                            flightPath.setPath(rutaAux);
+                
+                            flightPath.setMap(null);
+                            flightPath.setMap(map);
+
+                        },
+                        ()=>{
+                            alert('error al obtener la posicion');
+                        }
+
+                    );
+                }else{
+                    alert('el navegador no cuenta con la geolocalizacion');
+                }
+            }
+        }else{
+            aler_d_ub.classList.remove('d-none');
+        }
+            
+
+            
+
+            marcadores.forEach(m =>{
+                m.info.close();
+            })
+    
+            marcadores[s_destino_ub.selectedOptions[0].dataset.mark].info.open(map,marcadores[s_destino_ub.selectedOptions[0].dataset.mark].mark);
+
+
+
+            
+      });
 
 }

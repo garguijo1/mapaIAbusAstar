@@ -12,7 +12,7 @@
  <!--creamos un contenedor para el mapa   -->
 	<div id="map"></div>
 
-    <div class="cont_inter ocultar" id="cont_list_facultades">
+    <div class="cont_inter " id="cont_list_facultades">
          <h1>LISTA DE PUNTOS </h1>
          <div class="cont_scroll_list ">
             <ul id="lista_facultades">
@@ -20,7 +20,7 @@
          </div>
     </div>
 
-    <div class="cont_inter " id="cont_list_facultades">
+    <div class="cont_inter ocultar" id="cont_list_facultades">
         <h1>IR DE UN PUNTO A OTRO</h1>
         <div class="cont_scroll_list">
             <h3 class="sub_titulo">Origen</h3>
@@ -36,38 +36,89 @@
                 GENERAR RUTA
             </button>
 
+            <div class="alerta a_danger d-none" id="aler-od">
+                <div class='icon_alert'>
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="text_alert">
+                    <h4>debe elegir una punto de orige y de destino</h4>
+                </div>
+            </div>
         </div>
    </div>
 
     <div class="cont_inter ocultar" id="cont_list_facultades">
-        <h1>MI UBICACION</h1>
+        <h1>MI UBICACIÓN</h1>
         <div class="cont_scroll_list">
-        <!-- <ul id="lista_facultades">
-        </ul> -->
+            <h3 class="sub_titulo">Mostrar mi ubicación</h3>
+            <button class="btn_full" style="margin-top: 0px;" id="btn_mostrar_ubc">
+                MOSTRAR
+            </button>
+            <h3 class="sub_titulo">Simular ubicación</h3>
+            <div class="cont_chech_ubc">
+                <span>Desea simular su ubicación:</span>
+                <input type="checkbox" class="in_check" id="check_ub">
+                <label for="check_ub" class="lab_check"></label>
+                
+            </div>
+            
+            <label class="lbl_ubc">
+                <span>latitud: </span>
+                <input type="text" id="inp_lat" disabled placeholder="-12.05679">
+            </label>
+            <label class="lbl_ubc">
+                <span>longitud: </span>
+                <input type="text" id="inp_lng" disabled placeholder="-77.08196">
+            </label>
         </div>
     </div>
 
     <div class="cont_inter ocultar" id="cont_list_facultades">
         <h1>DE MI UBICACION A OTRO PUNTO</h1>
         <div class="cont_scroll_list">
-        <!-- <ul id="lista_facultades">
-        </ul> -->
+            <h3 class="sub_titulo">Destino</h3>
+            <select class="select_inter" name="" id="s_destino_ubc">
+                <option value="-1">Seleccione su destino</option>
+            </select>
+
+            <button class="btn_full" id='btn_genera_ruta_ubc'>
+                GENERAR RUTA
+            </button>
+
+            <div class="alerta a_info d-none" id="alert_ub">
+                <div class='icon_alert'>
+                    <i class="fas fa-info"></i>
+                </div>
+                <div class="text_alert">
+                    <h4 id="text_rub"></h4>
+                </div>
+            </div>
+
+            <div class="alerta a_danger d-none" id="aler-d-od">
+                <div class='icon_alert'>
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="text_alert">
+                    <h4>debe elegir una punto de destino</h4>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <div class="cont_btn">
         <div 
-            class="btn_ocultar_lista "
+            class="btn_ocultar_lista active"
             data-in=0>
                 <i class="fas fa-map-marker-alt"></i>
         </div>
         <div 
-            class="btn_ocultar_lista active"
+            class="btn_ocultar_lista "
             data-in=1>
                 <i class="fas fa-exchange"></i>
         </div>
         <div 
-            class="btn_ocultar_lista"
+            class="btn_ocultar_lista "
             data-in=2>
                 <i class="fas fa-male"></i>
         </div>

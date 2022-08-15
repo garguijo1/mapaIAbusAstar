@@ -34,6 +34,9 @@ h6{
 	width: 100%;
 }
 
+.d-none{
+    display: none !important;
+}
 .cont_inter{
     position: absolute;
     z-index: 10;
@@ -187,6 +190,7 @@ h6{
 
 .select_inter:focus{
     border: 2px solid var(--azul);
+    outline: none;
 }
 
 .btn_full{
@@ -196,7 +200,7 @@ h6{
     border: none;
     height: 40px;
     border-radius: 20px;
-    margin-top: 50px;
+    margin-top: 30px;
     letter-spacing: 2px;
     cursor: pointer;
     transition: all .5s;
@@ -205,3 +209,128 @@ h6{
 .btn_full:hover{
     background-color: #f3c52c;
 }
+
+.lbl_ubc{
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.lbl_ubc>span{
+    display: inline-block;
+    font-family: 'texto';
+    width: 60px;
+}
+
+.lbl_ubc>input{
+    width: calc(100% - 75px);
+    height: 30px;
+    font-family: 'texto';
+    border: none;
+    outline: 1px solid #4c80f07c;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.lbl_ubc>input:focus{
+    
+    outline: 2px solid var(--azul);
+    /* outline-offset: 3px; */
+}
+
+.lbl_ubc>input:disabled{
+    outline: 2px solid #a3a3a3;
+    background-color: #d6d6d6;
+}
+
+
+.cont_chech_ubc{
+    display: flex;
+    align-items: center;
+}
+
+
+.cont_chech_ubc>span{
+    font-family: 'texto';
+    font-size: 14px;
+}
+
+.in_check{
+    display: none;
+}
+
+.lab_check{
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    border-radius: 25px;
+    background-color: var(--rojo);
+    position: relative;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: all .5s;
+}
+
+.lab_check::after{
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 10px;
+    top: 3px;
+    left: 2px;
+    background-color: #fff;
+    transition: all .3s;
+}
+
+.in_check:checked ~ .lab_check{
+    background-color: var(--verde);
+}
+.in_check:checked ~ .lab_check::after{
+    left: 22px;
+}
+
+.a_danger{
+    background-color: #ffcccf;
+    color: #fa0e1a;
+}
+
+.a_info{
+    background-color: #ccffd0;
+    color: #349227;
+}
+
+.alerta{
+  
+    display: flex;
+    padding:  10px;
+    width: 100%;
+    margin-top: 20px;
+    height: 70px;
+    border-radius: 10px;
+}
+
+.alerta>.icon_alert{
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.alerta>.icon_alert>i{
+    font-size: 20px;
+}
+
+.alerta>.text_alert{
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.alerta>.text_alert>h4{
+    margin: 0;
+    font-family: 'texto';
+    font-size: 12px;
+}
+
