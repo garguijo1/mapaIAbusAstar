@@ -356,6 +356,14 @@ h6{
     font-family: 'texto';
     font-size: 12px;
 }
+
+.cont_info>.ltr_info{
+    display: inline-block;
+    font-size: 15px;
+    font-weight: bold;
+    margin-right: 10px;
+}   
+
 .cont_info>i{
     width: 30px;
     font-size: 15px;

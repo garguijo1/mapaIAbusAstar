@@ -488,8 +488,12 @@ s_destino_ub.append(frag_opt3);
                 if(inp_lat.value  && inp_lng.value){
                     text_rub.textContent = 'el sistema usara la ubicacion simulada';
                     aler_ub.classList.remove('d-none');
-                    cordUser.lat = parseFloat(inp_lat.value);
-                    cordUser.lng = parseFloat(inp_lng.value);
+
+                    if(cordUser.lat == 0 && cordUser.lng == 0){
+                        cordUser.lat = parseFloat(inp_lat.value);
+                        cordUser.lng = parseFloat(inp_lng.value);
+                    }
+                   
                     map.setCenter(cordUser);
                     markerUser.setPosition(cordUser);
     
@@ -614,13 +618,13 @@ s_destino_ub.append(frag_opt3);
 
       document.addEventListener("keydown", (event) => {
         if(check_mover.checked){
-            if (event.key == "ArrowLeft"){
+            if (event.key == "a"){
                 cordUser.lng = cordUser.lng - 0.00001;
-            } else if (event.key == "ArrowUp"){
+            } else if (event.key == "w"){
                 cordUser.lat = cordUser.lat + 0.00001;
-            } else if (event.key == "ArrowRight"){
+            } else if (event.key == "d"){
                 cordUser.lng = cordUser.lng + 0.00001;
-            } else if (event.key == "ArrowDown"){
+            } else if (event.key == "s"){
                 cordUser.lat = cordUser.lat - 0.00001;
             }
     
