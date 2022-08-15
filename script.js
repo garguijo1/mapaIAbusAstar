@@ -37,38 +37,30 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
 
     let nodoActual = nodoInicial;
     let nodoPadre;
-  
-    let cont = 0;
-   
-    while(!encontrado && cont <500){
-        cont++;
+
+    while(!encontrado){
         let f_menor = 9999999;
 
         cerrada.push(nodoActual);
 
         if(ruta[ruta.length - 1] !== nodoPadre && ruta[ruta.length - 1] !== nodoInicial){
             if(ruta.some(r => r === nodoPadre)){
-                let z= 0;
-                while(ruta[ruta.length - 1] !== nodoPadre && z<30){
+                while(ruta[ruta.length - 1] !== nodoPadre){
                     ruta.pop();
-                    z++;
                 }
             }else{
                 let reconstruccion = [];
                 reconstruccion.push(nodo_elegido);
-                let re = 0 ;
                 let nfill = nodo_elegido.nodoPadre;
-                while(!(ruta.some(r => r === reconstruccion[0].nodo)) && re < 100){
+                while(!(ruta.some(r => r === reconstruccion[0].nodo))){
                     let nodoAux = elegidos.filter(e => e.nodo === nfill);
                     let nAux = nodoAux[nodoAux.length - 1];
                     nfill = nAux.nodoPadre;
                     reconstruccion.unshift(nAux);
-                    re++;
                 }
-                re = 0
-                while(ruta[ruta.length - 1] !== reconstruccion[0].nodo && re < 100){
+
+                while(ruta[ruta.length - 1] !== reconstruccion[0].nodo){
                     ruta.pop();
-                    re++;
                 }
                 
                 ruta.pop();
@@ -78,13 +70,11 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
                 });
 
                 ruta.push(...recAux);
-                console.log(ruta);
             }
             
         }
         ruta.push(nodoActual);
            
-
         nodoActual.nodos.forEach(n => {
             if(puntos[n] === nodoFinal){
                 encontrado = true;

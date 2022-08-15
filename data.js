@@ -914,7 +914,7 @@ let puntos = [
   {
     id: 114,
     tipo: "f",
-    name: "Facultad de Ingeniería de Sistemas y Software",
+    name: "Facultad de Ingeniería de Sistemas e Informática",
     lat: -12.053576760575055, 
     lng: -77.08571361571587,
     nodos: [156],
