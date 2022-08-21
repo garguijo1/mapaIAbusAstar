@@ -120,13 +120,10 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
         nodoActual = nodo_elegido.nodo;
     }
 
-    // console.log('abierta: ',abierta);
-    // console.log('elegidos: ',elegidos);
+
 
     let nodoFinalDis = abierta.filter(a => a.nodo === nodoFinal);
-    // console.log('filtrado: ',nodoFinalDis);
-    // console.log('filtrado: ',nodoFinalDis[0]);
-    // console.log('filtrado: ',nodoFinalDis[0].dis);
+
     console.log('filtrado: ',nodoFinalDis[0].dis * 111111.11);
 
     cerrada.push(nodoFinal);
