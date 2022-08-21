@@ -2,9 +2,9 @@ let facultades = puntos.filter( x => x.tipo === 'f' );
 let puertas = puntos.filter( x => x.tipo === 'p' );
 
 let importante = [...puertas,...facultades];
-console.log(importante);
 
-//* funcion para calcular la distancia entre 2 puntos
+let distanciaTotal = 0;
+
 const distanciaCord = (pi,pf)=>{
     let dis = Math.sqrt( 
         Math.pow(pi.lat - pf.lat,2) + Math.pow(pi.lng - pf.lng,2)
@@ -39,11 +39,13 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
     let nodoPadre;
 
     while(!encontrado){
+
         let f_menor = 9999999;
 
         cerrada.push(nodoActual);
 
-        if(ruta[ruta.length - 1] !== nodoPadre && ruta[ruta.length - 1] !== nodoInicial){
+        if(ruta[ruta.length - 1] !== nodoPadre && 
+            ruta[ruta.length - 1] !== nodoInicial){
             if(ruta.some(r => r === nodoPadre)){
                 while(ruta[ruta.length - 1] !== nodoPadre){
                     ruta.pop();
@@ -117,9 +119,25 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
         nodoPadre = nodo_elegido.nodoPadre;
         nodoActual = nodo_elegido.nodo;
     }
+
+    // console.log('abierta: ',abierta);
+    // console.log('elegidos: ',elegidos);
+
+    let nodoFinalDis = abierta.filter(a => a.nodo === nodoFinal);
+    // console.log('filtrado: ',nodoFinalDis);
+    // console.log('filtrado: ',nodoFinalDis[0]);
+    // console.log('filtrado: ',nodoFinalDis[0].dis);
+    console.log('filtrado: ',nodoFinalDis[0].dis * 111111.11);
+
     cerrada.push(nodoFinal);
     ruta.push(nodoFinal);
-    return ruta;
+
+    let retornar = {
+        ruta : ruta,
+        dis : Math.round(nodoFinalDis[0].dis * 111111.11)
+    }
+
+    return retornar;
 }
 
 
@@ -127,19 +145,16 @@ const busquedaAStar = (nodoInicial, nodoFinal) => {
 //!====================================================================
 
 
-//creamos la funcion que inicia la posicion
+
 function iniciarMap(){
-    //variable que contendra latitud y longitud
+
     var coord = {lat:-12.056444575340228 ,lng:-77.08451069875066};
 
-    //* Creamos una variable de google maps en el 
-    //* elemento que creamos
     var map = new google.maps.Map(document.getElementById('map'),{
-      zoom: 16, //? el zoom con el que aparecera el mapa
-      center: coord, //? coordenados donde se ubicara el centro
+      zoom: 16,
+      center: coord, 
       mapId: '4ae3e9bf9f6364c2'
     });
-
 
     let rutaIcon = '';
     let marcadores = [];
@@ -153,8 +168,8 @@ function iniciarMap(){
 
         var cord_p = {lat: p.lat, lng: p.lng  }
         var marker = new google.maps.Marker({
-            position: cord_p , //? coordenadas del marker
-            map: map, //? mapa donde se ubica el marcador
+            position: cord_p , 
+            map: map, 
             icon: rutaIcon
         });
 
@@ -174,7 +189,7 @@ function iniciarMap(){
     let rutaBorrado =  [{ lat: 0, lng: 0 }];
 
 
-    //creamos la lista de facultades en la barar izquierda 
+
     const list_facultades = document.getElementById('lista_facultades');
     const cont_fac = [...document.querySelectorAll('.cont_inter')];
     const btn_ocultar = [...document.querySelectorAll('.btn_ocultar_lista')];
@@ -185,7 +200,7 @@ function iniciarMap(){
     const alert_od = document.getElementById('aler-od'); 
 
     const btn_genera_ruta = document.getElementById('btn_genera_ruta');
-      //? para simular la ubicacion 
+
       const check_ub = document.getElementById('check_ub');
       const btn_mst_ubc = document.getElementById('btn_mostrar_ubc');
       const inp_lat = document.getElementById('inp_lat');
@@ -203,6 +218,8 @@ function iniciarMap(){
       const text_mover = document.getElementById('text_mover');
       const aler_ub_mover = document.getElementById('aler-ub-mover');
 
+        const cont_dis = document.getElementById('cont_dis');
+        const dist_recorrida = document.getElementById('dist_recorrida');
 
     let pos = 0;
     let fragment = document.createDocumentFragment();
@@ -326,7 +343,10 @@ s_destino_ub.append(frag_opt3);
             marcadores[s_destino.selectedOptions[0].dataset.mark].info.open(map,marcadores[s_destino.selectedOptions[0].dataset.mark].mark);
     
 
-            rutaPath = busquedaAStar(puntos[ p_origen],puntos [p_destino]);
+            let aux = busquedaAStar(puntos[ p_origen],puntos [p_destino])
+
+            rutaPath = aux.ruta;
+            dist_recorrida.textContent = aux.dis
 
                 flightPath.setPath(rutaPath);
 
@@ -367,8 +387,8 @@ s_destino_ub.append(frag_opt3);
       }
 
     var markerUser = new google.maps.Marker({
-        position: cordUser , //? coordenadas del marker
-        map: map, //? mapa donde se ubica el marcador
+        position: cordUser , 
+        map: map, 
         icon: './sources/img/persona.png'
     });
 
@@ -376,6 +396,9 @@ s_destino_ub.append(frag_opt3);
         marcadores.forEach(m =>{
             m.info.close();
         })
+        
+        dist_recorrida.textContent = '0';
+
         borrarLinea();
         if(check_ub.checked){
             console.log('latitud: ',inp_lat.value);
@@ -411,9 +434,6 @@ s_destino_ub.append(frag_opt3);
             }
         }
       });
-
-    
-
 
       s_destino_ub.addEventListener('change',()=> {
         aler_ub.classList.add('d-none');
@@ -453,8 +473,10 @@ s_destino_ub.append(frag_opt3);
                         }
                     });
         
-                    console.log('NODO CERCANO: ',nodoCercano);
-                    let rutaAux = busquedaAStar(nodoCercano,puntos[s_destino_ub.value]);
+                    // console.log('NODO CERCANO: ',nodoCercano);
+                    let auxRetorno = busquedaAStar(nodoCercano,puntos[s_destino_ub.value]);
+                    dist_recorrida.textContent = auxRetorno.dis;
+                    let rutaAux = auxRetorno.ruta;
                     rutaAux.unshift(cordUser);
                     flightPath.setPath(rutaAux);
         
@@ -486,7 +508,9 @@ s_destino_ub.append(frag_opt3);
                             });
                 
                             console.log('NODO CERCANO: ',nodoCercano);
-                            let rutaAux = busquedaAStar(nodoCercano,puntos[s_destino_ub.value]);
+                            let auxRetorno = busquedaAStar(nodoCercano,puntos[s_destino_ub.value]);
+                            let rutaAux = auxRetorno.ruta;
+                            dist_recorrida.textContent = auxRetorno.dis;
                             rutaAux.unshift(cordUser);
                             flightPath.setPath(rutaAux);
                 
@@ -505,11 +529,7 @@ s_destino_ub.append(frag_opt3);
             }
         }else{
             aler_d_ub.classList.remove('d-none');
-        }
-            
-
-            
-
+        }           
             marcadores.forEach(m =>{
                 m.info.close();
             })
@@ -527,6 +547,7 @@ s_destino_ub.append(frag_opt3);
                     cordUser.lat = parseFloat(inp_lat.value);
                     cordUser.lng = parseFloat(inp_lng.value);
                     markerUser.setPosition(cordUser);
+                    dist_recorrida.textContent = '0';
                     text_mover.textContent = `El sistema usara la ubicación simualada, lat: ${cordUser.lat}, lng: ${cordUser.lng}`;
                     alert_mover.classList.remove('d-none');
                 }else{
@@ -544,8 +565,7 @@ s_destino_ub.append(frag_opt3);
                             console.log(cordUser);
                             map.setCenter(cordUser);
                             markerUser.setPosition(cordUser);
-
-         
+                            dist_recorrida.textContent = '0';
                             text_mover.textContent = `El sistema usara la ubicación real, lat: ${cordUser.lat}, lng: ${cordUser.lng}`;
                             alert_mover.classList.remove('d-none');
 
